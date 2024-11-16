@@ -64,14 +64,16 @@ window.addEventListener('load', (event) => {
           card1.classList.add('blocked');
           card2.classList.add('blocked');
           
+
+          
           // Increment pairsGuessed and update the score display
           memoryGame.pairsGuessed++;
           document.getElementById('pairs-guessed').innerText = memoryGame.pairsGuessed;
 
           memoryGame.pickedCards = [];
 
-          // Check if the game is finished
-          if (memoryGame.checkIfFinished()) {
+          // Check if the game is finished (all pairs guessed)
+          if (memoryGame.pairsGuessed === 24) {
             alert('You won!');
           }
         } else {
