@@ -44,8 +44,45 @@ window.addEventListener('load', (event) => {
   // Bind the click event of each element to a function
   document.querySelectorAll('.card').forEach((card) => {
     card.addEventListener('click', () => {
-      // TODO: write some code here
-      console.log(`Card clicked: ${card}`);
+      // Flip the card by adding the 'turned' class
+      card.classList.add('turned');
+      memoryGame.pickedCards.push(card);
+
+      // Check if two cards have been picked
+      if (memoryGame.pickedCards.length === 2) {
+        const [card1, card2] = memoryGame.pickedCards;
+        const card1Name = card1.getAttribute('data-card-name');
+        const card2Name = card2.getAttribute('data-card-name');
+
+        // Increment pairsClicked and update the score display
+        memoryGame.pairsClicked++;
+        document.getElementById('pairs-clicked').innerText = memoryGame.pairsClicked;
+
+        // Check if they are a matching pair
+        if (memoryGame.checkIfPair(card1Name, card2Name)) {
+          // Keep the cards flipped if they match by adding 'blocked' class
+          card1.classList.add('blocked');
+          card2.classList.add('blocked');
+          
+          // Increment pairsGuessed and update the score display
+          memoryGame.pairsGuessed++;
+          document.getElementById('pairs-guessed').innerText = memoryGame.pairsGuessed;
+
+          memoryGame.pickedCards = [];
+
+          // Check if the game is finished
+          if (memoryGame.checkIfFinished()) {
+            alert('You won!');
+          }
+        } else {
+          // Flip the cards back over after a short delay if they don't match
+          setTimeout(() => {
+            card1.classList.remove('turned');
+            card2.classList.remove('turned');
+            memoryGame.pickedCards = [];
+          }, 1000);
+        }
+      }
     });
   });
 });
